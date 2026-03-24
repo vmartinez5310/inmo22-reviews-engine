@@ -1,79 +1,109 @@
-// 1. CONFIGURACIÓN
-import { CONFIG } from "./config.js";
-const API_URL = CONFIG.API_URL;
-const { GAP } = CONFIG.SETTINGS;
-const skeletonCount = CONFIG.SETTINGS.SKELETON_COUNT;
+/**
+ * IER - Inmo22 Engine Reviews
+ * Arquitectura de Micro-Frontend
+ */
 
-const carousel = document.getElementById("reviews-carousel");
-const dotsContainer = document.getElementById("dots-container");
-const prevBtn = document.getElementById("prevBtn");
-const nextBtn = document.getElementById("nextBtn");
-
-let currentIndex = 0;
 let reviewsData = [];
+let currentIndex = 0;
 
-// 2. INICIO
-async function initReviews() {
-    // Estado de carga inicial
-    prevBtn.classList.add('loading-nav');
-    nextBtn.classList.add('loading-nav');
-    
+export async function initIER(config) {
+    const root = document.querySelector(config.target || '#ier-app-root');
+    if (!root) return;
+
+    // ESTRUCTURA CORREGIDA: Botones al lado del Viewport
+    root.innerHTML = `
+        <section class="inmo-reviews-section">
+            <h2 class="inmo-title">Lo que dicen nuestros clientes</h2>
+            
+            <div class="inmo-carousel-container">
+                <button id="prevBtn" class="nav-btn inmo-prev loading-nav">&#10094;</button>
+                
+                <div class="inmo-carousel-viewport">
+                    <div id="reviews-carousel" class="inmo-carousel loading-state"></div>
+                </div>
+                
+                <button id="nextBtn" class="nav-btn inmo-next loading-nav">&#10095;</button>
+            </div>
+
+            <div id="dots-container" class="inmo-dots-container"></div>
+        </section>
+    `;
+
+    const carousel = document.getElementById("reviews-carousel");
+    const prevBtn = document.getElementById("prevBtn");
+    const nextBtn = document.getElementById("nextBtn");
+
+    // Skeletons inyectados
+    carousel.innerHTML = Array(3).fill(`
+        <div class="inmo-card skeleton-card">
+            <div class="skeleton-header"></div>
+            <div class="skeleton-line"></div>
+            <div class="skeleton-line short"></div>
+            <div class="skeleton-footer">
+                <div class="skeleton-avatar"></div>
+                <div class="skeleton-details"></div>
+            </div>
+        </div>
+    `).join('');
+
     try {
-        const response = await fetch(API_URL);
+        const response = await fetch(config.endpoint);
         const data = await response.json();
-
+        
         reviewsData = data.reviews || [];
-        const schemaJSON = data.schema;
 
         if (reviewsData.length === 0) {
-            document.querySelector(".inmo-reviews-section").style.display = "none";
+            root.style.display = "none";
             return;
         }
 
-        renderCards();
-        setupPagination();
+        if (data.schema) {
+            const schemaScript = document.createElement("script");
+            schemaScript.type = "application/ld+json";
+            schemaScript.text = JSON.stringify(data.schema);
+            document.head.appendChild(schemaScript);
+        }
 
-        // SEO/IA Injection
-        const schemaScript = document.createElement("script");
-        schemaScript.type = "application/ld+json";
-        schemaScript.text = JSON.stringify(schemaJSON);
-        document.head.appendChild(schemaScript);
+        renderCards(carousel);
+        setupPagination(carousel, prevBtn, nextBtn);
 
-        // Quitar estado de carga
+        prevBtn.onclick = () => move(carousel, -1, prevBtn, nextBtn);
+        nextBtn.onclick = () => move(carousel, 1, prevBtn, nextBtn);
+        window.onresize = () => setupPagination(carousel, prevBtn, nextBtn);
+
+        carousel.classList.remove('loading-state');
         prevBtn.classList.remove('loading-nav');
         nextBtn.classList.remove('loading-nav');
 
     } catch (error) {
-        console.error("Error al conectar con Inmobiliarte Data:", error);
+        console.error("IER Error:", error);
+        root.style.display = "none";
     }
 }
 
-// 3. RENDERIZADO
-function renderCards() {
-    carousel.innerHTML = ''; // Borra Skeletons
+// 4. CREACIÓN DE TARJETAS (Sin clase de tema invasiva)
+function renderCards(carousel) {
+    carousel.innerHTML = ''; 
+    
     reviewsData.forEach((item) => {
         const initial = item.nombre ? item.nombre.charAt(0).toUpperCase() : "I";
-        const fecha = new Date(item.timestamp);
-        const hoy = new Date();
-        const dias = Math.floor((hoy - fecha) / (1000 * 60 * 60 * 24));
+        const dias = Math.floor((new Date() - new Date(item.timestamp)) / (1000 * 60 * 60 * 24));
         const tiempoTxt = dias === 0 ? "Hoy" : (dias === 1 ? "Ayer" : `Hace ${dias} días`);
 
         const card = document.createElement("div");
-        card.className = "inmo-card";
+        card.className = `inmo-card`;
         card.innerHTML = `
-            <div>
-                <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px;">
+            <div class="card-content">
+                <div class="card-header">
                     <div class="inmo-stars">${"★".repeat(item.estrellas)}${"☆".repeat(5 - item.estrellas)}</div>
-                    <span style="font-size:10px; color:#aaa;">${tiempoTxt}</span>
+                    <span class="time-stamp">${tiempoTxt}</span>
                 </div>
-                <span style="background:#eee; padding:2px 8px; border-radius:10px; font-size:10px; color:var(--inmo-magenta); font-weight:bold;">
-                    ${item.servicio || "Asesoría"}
-                </span>
+                <span class="service-tag">${item.servicio || "Asesoría"}</span>
                 <p class="inmo-comment">"${item.comentario}"</p>
                 ${item.respuesta ? `
-                    <div style="background:var(--inmo-light-gray); padding:10px; border-radius:8px; margin-top:10px; border-left:3px solid var(--inmo-magenta);">
-                        <p style="font-size:11px; margin:0; font-weight:bold; color:var(--inmo-dark);">Respuesta de Inmobiliarte 22:</p>
-                        <p style="font-size:11px; margin:0; color:var(--inmo-gray);">${item.respuesta}</p>
+                    <div class="inmo-reply">
+                        <p style="font-size:11px; margin:0; font-weight:bold; color: var(--inmo-dark);">Respuesta de Inmobiliarte 22:</p>
+                        <p style="font-size:11px; margin:0; color: var(--inmo-gray);">${item.respuesta}</p>
                     </div>
                 ` : ""}
             </div>
@@ -89,77 +119,56 @@ function renderCards() {
     });
 }
 
-// 4. PAGINACIÓN
-function setupPagination() {
-    const windowWidth = window.innerWidth;
-    const visibleCards = windowWidth > 992 ? 3 : (windowWidth > 600 ? 2 : 1);
-    const totalPages = Math.ceil(reviewsData.length / visibleCards);
+function getVisibleCards() {
+    return window.innerWidth > 992 ? 3 : (window.innerWidth > 600 ? 2 : 1);
+}
 
-    // Reset de índice si el cambio de pantalla desborda las páginas
+function setupPagination(carousel, prevBtn, nextBtn) {
+    const visible = getVisibleCards();
+    const dotsContainer = document.getElementById("dots-container");
+    const totalPages = Math.ceil(reviewsData.length / visible);
+    
     if (currentIndex >= totalPages) currentIndex = totalPages - 1;
-
-    const shouldShowNav = reviewsData.length > visibleCards;
-    prevBtn.style.display = shouldShowNav ? "flex" : "none";
-    nextBtn.style.display = shouldShowNav ? "flex" : "none";
-
+    
     dotsContainer.innerHTML = "";
+    const shouldShowNav = reviewsData.length > visible;
+    
     if (shouldShowNav) {
         for (let i = 0; i < totalPages; i++) {
             const dot = document.createElement("div");
             dot.className = `inmo-dot ${i === currentIndex ? "active" : ""}`;
-            dot.onclick = () => goToPage(i, visibleCards);
+            dot.onclick = () => { currentIndex = i; update(carousel, prevBtn, nextBtn); };
             dotsContainer.appendChild(dot);
         }
     }
-    updateCarousel(visibleCards);
+    update(carousel, prevBtn, nextBtn);
 }
 
-function goToPage(pageIndex, visibleCards) {
-    currentIndex = pageIndex;
-    updateCarousel(visibleCards);
+function move(carousel, delta, prevBtn, nextBtn) {
+    const visible = getVisibleCards();
+    const totalPages = Math.ceil(reviewsData.length / visible);
+    const newIndex = currentIndex + delta;
+    
+    if (newIndex >= 0 && newIndex < totalPages) {
+        currentIndex = newIndex;
+        update(carousel, prevBtn, nextBtn);
+    }
 }
 
-function updateCarousel(visibleCards) {
-    const cardElement = document.querySelector(".inmo-card");
-    if (!cardElement) return;
-
-    const gap = 20;
-    const cardWidth = cardElement.offsetWidth;
-    // Mueve exactamente el bloque de tarjetas visibles
-    const moveAmount = (cardWidth + gap) * (currentIndex * visibleCards);
-
-    carousel.style.transform = `translateX(-${moveAmount}px)`;
-
-    const dots = document.querySelectorAll(".inmo-dot");
-    dots.forEach((dot, index) => dot.classList.toggle("active", index === currentIndex));
-
-    const totalPages = Math.ceil(reviewsData.length / visibleCards);
+function update(carousel, prevBtn, nextBtn) {
+    const visible = getVisibleCards();
+    const gap = 20; 
+    const cardWidth = carousel.querySelector('.inmo-card')?.offsetWidth || 0;
+    const offset = (cardWidth + gap) * (currentIndex * visible);
+    
+    carousel.style.transform = `translateX(-${offset}px)`;
+    
+    document.querySelectorAll(".inmo-dot").forEach((d, i) => d.classList.toggle("active", i === currentIndex));
+    
+    const totalPages = Math.ceil(reviewsData.length / visible);
+    prevBtn.disabled = currentIndex === 0;
     prevBtn.style.opacity = currentIndex === 0 ? "0.3" : "1";
-    prevBtn.style.pointerEvents = currentIndex === 0 ? "none" : "auto";
+    
+    nextBtn.disabled = currentIndex >= totalPages - 1;
     nextBtn.style.opacity = currentIndex >= totalPages - 1 ? "0.3" : "1";
-    nextBtn.style.pointerEvents = currentIndex >= totalPages - 1 ? "none" : "auto";
 }
-
-// 5. NAVEGACIÓN
-prevBtn.onclick = () => {
-    const visibleCards = window.innerWidth > 992 ? 3 : (window.innerWidth > 600 ? 2 : 1);
-    if (currentIndex > 0) {
-        currentIndex--;
-        updateCarousel(visibleCards);
-    }
-};
-
-nextBtn.onclick = () => {
-    const visibleCards = window.innerWidth > 992 ? 3 : (window.innerWidth > 600 ? 2 : 1);
-    const totalPages = Math.ceil(reviewsData.length / visibleCards);
-    if (currentIndex < totalPages - 1) {
-        currentIndex++;
-        updateCarousel(visibleCards);
-    }
-};
-
-window.onresize = () => {
-    setupPagination();
-};
-
-initReviews();

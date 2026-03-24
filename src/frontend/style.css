@@ -5,6 +5,7 @@
   --inmo-gray: #757575;
   --inmo-light-gray: #f9f9f9;
   --card-bg: #ffffff;
+  --inmo-gold: #cfa15e;
 }
 
 /* 1. SECCIÓN PRINCIPAL */
@@ -14,7 +15,6 @@
   margin: 40px auto;
   padding: 0 20px;
   box-sizing: border-box;
-  position: relative;
   font-family: "Helvetica Neue", Arial, sans-serif;
 }
 
@@ -26,44 +26,89 @@
   font-size: 28px;
 }
 
-/* 2. CARRUSEEL Y CARDS */
-.inmo-carousel-wrapper {
-  overflow: hidden;
+/* 2. ARQUITECTURA FLEXBOX PARA BOTONES Y CARRUSEL */
+.inmo-carousel-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 15px; /* Espacio exacto entre botones y el carrusel */
   width: 100%;
+}
+
+.inmo-carousel-viewport {
+  overflow: hidden; /* Esto reemplaza el overflow oculto global */
+  flex-grow: 1;
 }
 
 .inmo-carousel {
   display: flex;
   gap: 20px;
   transition: transform 0.5s cubic-bezier(0.25, 1, 0.5, 1);
-  padding: 15px 0;
+  padding: 10px 0;
 }
 
+/* 3. DISEÑO DE LA TARJETA (Idéntico a tu maqueta) */
 .inmo-card {
   background: var(--card-bg);
-  border: 1px solid #eee;
+  border: 1px solid #eaeaea; /* Borde sutil, no magenta */
   border-radius: 12px;
   padding: 24px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.03);
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  flex: 0 0 calc(33.333% - 14px);
+  /* Matemáticas perfectas para 3 tarjetas con 20px de gap */
+  flex: 0 0 calc(33.333% - 13.333px); 
   box-sizing: border-box;
 }
 
-/* 3. ELEMENTOS DE LA CARD */
-.inmo-stars {
-  color: var(--inmo-magenta);
-  font-size: 16px;
+.card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
   margin-bottom: 8px;
 }
-.inmo-comment {
-  font-size: 15px;
-  color: var(--inmo-dark);
-  line-height: 1.6;
-  font-style: italic;
+
+.inmo-stars {
+  color: var(--inmo-gold);
+  font-size: 16px;
+  letter-spacing: 1px;
 }
+
+.time-stamp {
+  font-size: 10px;
+  color: #bbb;
+}
+
+.service-tag {
+  background: #f4eff2; /* Fondo magenta ultra suave */
+  padding: 4px 8px;
+  border-radius: 4px;
+  font-size: 9px;
+  color: var(--inmo-magenta);
+  font-weight: 800;
+  display: inline-block;
+  margin-bottom: 12px;
+  text-transform: uppercase;
+}
+
+.inmo-comment {
+  font-size: 14px;
+  color: var(--inmo-dark);
+  line-height: 1.5;
+  font-style: italic;
+  margin: 0 0 15px 0;
+}
+
+/* Caja de respuesta de Inmobiliarte 22 */
+.inmo-reply {
+  background: var(--inmo-light-gray);
+  padding: 12px;
+  border-radius: 8px;
+  margin-top: auto;
+  border-left: 2px solid var(--inmo-magenta); /* Aquí sí va el toque magenta */
+}
+
 .inmo-footer {
   display: flex;
   align-items: center;
@@ -72,9 +117,10 @@
   padding-top: 15px;
   margin-top: 15px;
 }
+
 .inmo-avatar {
-  width: 45px;
-  height: 45px;
+  width: 40px;
+  height: 40px;
   background-color: var(--inmo-celeste);
   color: white;
   border-radius: 50%;
@@ -82,129 +128,108 @@
   align-items: center;
   justify-content: center;
   font-weight: bold;
+  font-size: 14px;
 }
+
+.inmo-user-details {
+  display: flex;
+  flex-direction: column;
+}
+
 .inmo-name {
   font-weight: 700;
-  font-size: 14px;
+  font-size: 13px;
   color: var(--inmo-dark);
 }
+
 .inmo-property {
-  font-size: 12px;
+  font-size: 11px;
   color: var(--inmo-gray);
   text-transform: uppercase;
 }
 
-/* 4. SKELETON LOADERS (Animación) */
-@keyframes inmo-pulse {
-  0% {
-    opacity: 1;
-  }
-  50% {
-    opacity: 0.4;
-  }
-  100% {
-    opacity: 1;
-  }
-}
-
-.inmo-skeleton-card {
-  background: #fff;
-  border: 1px solid #eee;
-  border-radius: 12px;
-  padding: 24px;
-  flex: 0 0 calc(33.333% - 14px);
-  box-sizing: border-box;
-}
-.sk-line {
-  background: #eee;
-  border-radius: 4px;
-  animation: inmo-pulse 1.5s infinite;
-  margin-bottom: 10px;
-}
-.sk-stars {
-  width: 40%;
-  height: 15px;
-}
-.sk-text-1 {
-  width: 90%;
-  height: 12px;
-}
-.sk-text-2 {
-  width: 70%;
-  height: 12px;
-}
-.sk-avatar {
+/* 4. BOTONES Y DOTS (Sin position: absolute) */
+.nav-btn {
+  flex-shrink: 0; /* Evita que el botón se aplaste */
+  background: white;
+  border: 1px solid #eaeaea;
+  border-radius: 50%;
   width: 40px;
   height: 40px;
-  border-radius: 50%;
-  background: #eee;
-  animation: inmo-pulse 1.5s infinite;
-}
-
-/* 5. NAVEGACIÓN Y DOTS */
-.inmo-nav-btn {
-  position: absolute;
-  top: 50%;
-  transform: translateY(-50%);
-  background: white;
-  border: 1px solid #ddd;
-  border-radius: 50%;
-  width: 45px;
-  height: 45px;
   cursor: pointer;
-  color: var(--inmo-magenta);
-  z-index: 10;
-  display: none;
+  color: var(--inmo-gray);
+  display: flex;
   align-items: center;
   justify-content: center;
+  font-weight: bold;
+  transition: all 0.3s;
 }
-.inmo-prev {
-  left: -25px;
+
+.nav-btn:hover:not(:disabled) {
+  border-color: var(--inmo-magenta);
+  color: var(--inmo-magenta);
 }
-.inmo-next {
-  right: -25px;
+
+.nav-btn:disabled {
+  opacity: 0.3;
+  cursor: not-allowed;
 }
-.loading-nav {
-  opacity: 0;
-  pointer-events: none;
-}
+
+.loading-nav { opacity: 0 !important; }
 
 .inmo-dots-container {
   display: flex;
   justify-content: center;
-  gap: 8px;
-  margin-top: 25px;
+  gap: 6px;
+  margin-top: 15px;
 }
+
 .inmo-dot {
-  width: 10px;
-  height: 10px;
+  width: 8px;
+  height: 8px;
   border-radius: 50%;
-  background: #ccc;
+  background: #ddd;
   cursor: pointer;
   transition: 0.3s;
 }
+
 .inmo-dot.active {
   background: var(--inmo-magenta);
-  width: 25px;
-  border-radius: 5px;
+  width: 20px;
+  border-radius: 4px;
 }
 
-/* 6. RESPONSIVIDAD */
+/* 5. SKELETONS */
+@keyframes inmo-pulse {
+  0% { opacity: 1; }
+  50% { opacity: 0.4; }
+  100% { opacity: 1; }
+}
+.skeleton-card { box-shadow: none; }
+.skeleton-header, .skeleton-line, .skeleton-avatar, .skeleton-details {
+  background: #eee;
+  animation: inmo-pulse 1.5s infinite;
+  border-radius: 4px;
+}
+.skeleton-header { width: 40%; height: 16px; margin-bottom: 20px; }
+.skeleton-line { width: 90%; height: 12px; margin-bottom: 12px; }
+.skeleton-line.short { width: 65%; }
+.skeleton-footer { display: flex; gap: 12px; margin-top: 25px; border-top: 1px solid #f0f0f0; padding-top: 15px; }
+.skeleton-avatar { width: 40px; height: 40px; border-radius: 50%; }
+.skeleton-details { width: 50%; height: 20px; margin-top: 10px; }
+
+/* 6. RESPONSIVIDAD (Ajuste fluido) */
 @media (max-width: 992px) {
-  .inmo-card,
-  .inmo-skeleton-card {
-    flex: 0 0 calc(50% - 10px);
-  }
-  .inmo-prev {
-    left: 0px;
-  }
-  .inmo-next {
-    right: 0px;
+  .inmo-card, .skeleton-card {
+    flex: 0 0 calc(50% - 10px); /* 2 tarjetas */
   }
 }
+
 @media (max-width: 600px) {
-  .inmo-card,
-  .inmo-skeleton-card {
-    flex: 0 0 100%;
+  .inmo-card, .skeleton-card {
+    flex: 0 0 100%; /* 1 tarjeta */
+  }
+  .nav-btn {
+    display: none; /* Ocultamos las flechas en móvil por limpieza */
   }
 }
