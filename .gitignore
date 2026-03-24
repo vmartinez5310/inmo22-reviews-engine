@@ -1,0 +1,10 @@
+# Configuración sensible
+src/frontend/config.js
+
+# Archivos del sistema
+.DS_Store
+Thumbs.db
+
+# Carpetas de dependencias (si llegas a usar npm)
+node_modules/
+dist/
