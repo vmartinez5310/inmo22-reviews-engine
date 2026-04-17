@@ -7,6 +7,12 @@
   --card-bg: #ffffff;
   --inmo-gold: #cfa15e;
 }
+/* Paleta de Colores Dinámica para Avatares */
+.avatar-magenta { background-color: #d81b60; }
+.avatar-blue    { background-color: #1e88e5; }
+.avatar-green   { background-color: #43a047; }
+.avatar-orange  { background-color: #fb8c00; }
+.avatar-purple  { background-color: #8e24aa; }
 
 /* 1. SECCIÓN PRINCIPAL */
 .inmo-reviews-section {
@@ -31,12 +37,12 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 15px; /* Espacio exacto entre botones y el carrusel */
+  gap: 15px;
   width: 100%;
 }
 
 .inmo-carousel-viewport {
-  overflow: hidden; /* Esto reemplaza el overflow oculto global */
+  overflow: hidden;
   flex-grow: 1;
 }
 
@@ -47,17 +53,16 @@
   padding: 10px 0;
 }
 
-/* 3. DISEÑO DE LA TARJETA (Idéntico a tu maqueta) */
+/* 3. DISEÑO DE LA TARJETA */
 .inmo-card {
   background: var(--card-bg);
-  border: 1px solid #eaeaea; /* Borde sutil, no magenta */
+  border: 1px solid #eaeaea;
   border-radius: 12px;
   padding: 24px;
   box-shadow: 0 4px 15px rgba(0, 0, 0, 0.03);
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  /* Matemáticas perfectas para 3 tarjetas con 20px de gap */
   flex: 0 0 calc(33.333% - 13.333px); 
   box-sizing: border-box;
 }
@@ -81,7 +86,7 @@
 }
 
 .service-tag {
-  background: #f4eff2; /* Fondo magenta ultra suave */
+  background: #f4eff2;
   padding: 4px 8px;
   border-radius: 4px;
   font-size: 9px;
@@ -100,13 +105,13 @@
   margin: 0 0 15px 0;
 }
 
-/* Caja de respuesta de Inmobiliarte 22 */
+/* Caja de respuesta de Inmobiliaria */
 .inmo-reply {
   background: var(--inmo-light-gray);
   padding: 12px;
   border-radius: 8px;
   margin-top: auto;
-  border-left: 2px solid var(--inmo-magenta); /* Aquí sí va el toque magenta */
+  border-left: 2px solid var(--inmo-magenta);
 }
 
 .inmo-footer {
@@ -121,7 +126,6 @@
 .inmo-avatar {
   width: 40px;
   height: 40px;
-  background-color: var(--inmo-celeste);
   color: white;
   border-radius: 50%;
   display: flex;
@@ -148,9 +152,9 @@
   text-transform: uppercase;
 }
 
-/* 4. BOTONES Y DOTS (Sin position: absolute) */
+/* 4. BOTONES Y DOTS */
 .nav-btn {
-  flex-shrink: 0; /* Evita que el botón se aplaste */
+  flex-shrink: 0; 
   background: white;
   border: 1px solid #eaeaea;
   border-radius: 50%;
@@ -218,18 +222,18 @@
 .skeleton-avatar { width: 40px; height: 40px; border-radius: 50%; }
 .skeleton-details { width: 50%; height: 20px; margin-top: 10px; }
 
-/* 6. RESPONSIVIDAD (Ajuste fluido) */
+/* 6. RESPONSIVIDAD */
 @media (max-width: 992px) {
   .inmo-card, .skeleton-card {
-    flex: 0 0 calc(50% - 10px); /* 2 tarjetas */
+    flex: 0 0 calc(50% - 10px);
   }
 }
 
 @media (max-width: 600px) {
   .inmo-card, .skeleton-card {
-    flex: 0 0 100%; /* 1 tarjeta */
+    flex: 0 0 100%; 
   }
   .nav-btn {
-    display: none; /* Ocultamos las flechas en móvil por limpieza */
+    display: none;
   }
 }

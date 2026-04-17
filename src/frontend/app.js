@@ -10,7 +10,7 @@ export async function initIER(config) {
     const root = document.querySelector(config.target || '#ier-app-root');
     if (!root) return;
 
-    // ESTRUCTURA CORREGIDA: Botones al lado del Viewport
+    // 3. ESTRUCTURA HTML INICIAL CON SKELETONS
     root.innerHTML = `
         <section class="inmo-reviews-section">
             <h2 class="inmo-title">Lo que dicen nuestros clientes</h2>
@@ -81,7 +81,8 @@ export async function initIER(config) {
     }
 }
 
-// 4. CREACIÓN DE TARJETAS (Sin clase de tema invasiva)
+const avatarClasses = ['avatar-magenta', 'avatar-blue', 'avatar-green', 'avatar-orange', 'avatar-purple'];
+// 4. CREACIÓN DE TARJETAS
 function renderCards(carousel) {
     carousel.innerHTML = ''; 
     
@@ -89,6 +90,7 @@ function renderCards(carousel) {
         const initial = item.nombre ? item.nombre.charAt(0).toUpperCase() : "I";
         const dias = Math.floor((new Date() - new Date(item.timestamp)) / (1000 * 60 * 60 * 24));
         const tiempoTxt = dias === 0 ? "Hoy" : (dias === 1 ? "Ayer" : `Hace ${dias} días`);
+        const randomClass = avatarClasses[Math.floor(Math.random() * avatarClasses.length)];
 
         const card = document.createElement("div");
         card.className = `inmo-card`;
@@ -108,7 +110,7 @@ function renderCards(carousel) {
                 ` : ""}
             </div>
             <div class="inmo-footer">
-                <div class="inmo-avatar">${initial}</div>
+                <div class="inmo-avatar ${randomClass}">${initial}</div>
                 <div class="inmo-user-details">
                     <span class="inmo-name">${item.nombre}</span>
                     <span class="inmo-property">${item.zona}</span>
