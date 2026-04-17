@@ -23,8 +23,8 @@ function doGet() {
   const schemaData = {
     "@context": "https://schema.org/",
     "@type": "RealEstateAgent", // Cambiamos a RealEstateAgent para mejor SEO
-    "name": "Inmobiliarte 22",
-    "image": "https://assets.easybroker.com/organization_files/70952/horizontal-grande-inmobiliarte22.png", 
+    "name": "Inmobiliaria", //Añade el nombre de la in
+    "image": "logo_url_aqui", // URL del logo de la inmobiliaria
     "address": {
       "@type": "PostalAddress",
       "addressLocality": "CDMX",
