@@ -1,7 +1,252 @@
-/**
+:root {
+  --inmo-magenta: #a31d5d;
+  --inmo-celeste: #3897f0;
+  --inmo-dark: #333333;
+  --inmo-gray: #757575;
+  --inmo-light-gray: #f9f9f9;
+  --card-bg: #ffffff;
+  --inmo-gold: #cfa15e;
+}
+
+/* Paleta de Colores Dinámica para Avatares */
+.avatar-magenta { background-color: #d81b60; }
+.avatar-blue    { background-color: #1e88e5; }
+.avatar-green   { background-color: #43a047; }
+.avatar-orange  { background-color: #fb8c00; }
+.avatar-purple  { background-color: #8e24aa; }
+
+/* 1. SECCIÓN PRINCIPAL */
+.inmo-reviews-section {
+  width: 100%;
+  max-width: 1100px;
+  margin: 40px auto;
+  padding: 0 20px;
+  box-sizing: border-box;
+  font-family: "Helvetica Neue", Arial, sans-serif;
+}
+
+.inmo-title {
+  text-align: center;
+  color: var(--inmo-dark);
+  font-weight: 700;
+  margin-bottom: 30px;
+  font-size: 28px;
+}
+
+/* 2. ARQUITECTURA FLEXBOX PARA BOTONES Y CARRUSEL */
+.inmo-carousel-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 15px;
+  width: 100%;
+}
+
+.inmo-carousel-viewport {
+  overflow: hidden;
+  flex-grow: 1;
+}
+
+.inmo-carousel {
+  display: flex;
+  gap: 20px;
+  transition: transform 0.5s cubic-bezier(0.25, 1, 0.5, 1);
+  padding: 10px 0;
+}
+
+/* 3. DISEÑO DE LA TARJETA (Actualizado para Bootstrap) */
+.inmo-card {
+  background: var(--card-bg);
+  border: 1px solid #eaeaea;
+  border-radius: 12px;
+  padding: 24px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.03);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  flex: 0 0 calc(33.333% - 13.333px); 
+  box-sizing: border-box;
+}
+
+/* Ajuste específico para neutralizar Bootstrap en el header */
+.inmo-card .card-header {
+  display: flex !important;
+  justify-content: space-between !important;
+  align-items: center !important;
+  margin-bottom: 8px !important;
+  /* Reset de Bootstrap */
+  background: none !important;
+  background-color: transparent !important;
+  border-bottom: none !important;
+  padding: 0 !important;
+}
+
+.inmo-stars {
+  color: var(--inmo-gold);
+  font-size: 16px;
+  letter-spacing: 1px;
+}
+
+.time-stamp {
+  font-size: 10px;
+  color: #bbb;
+}
+
+.service-tag {
+  background: #f4eff2;
+  padding: 4px 8px;
+  border-radius: 4px;
+  font-size: 9px;
+  color: var(--inmo-magenta);
+  font-weight: 800;
+  display: inline-block;
+  margin-bottom: 12px;
+  text-transform: uppercase;
+}
+
+.inmo-comment {
+  font-size: 14px;
+  color: var(--inmo-dark);
+  line-height: 1.5;
+  font-style: italic;
+  margin: 0 0 15px 0;
+}
+
+/* Caja de respuesta de Inmobiliaria */
+.inmo-reply {
+  background: var(--inmo-light-gray);
+  padding: 12px;
+  border-radius: 8px;
+  margin-top: auto;
+  border-left: 2px solid var(--inmo-magenta);
+}
+
+.inmo-footer {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  border-top: 1px solid #f0f0f0;
+  padding-top: 15px;
+  margin-top: 15px;
+}
+
+.inmo-avatar {
+  width: 40px;
+  height: 40px;
+  color: white;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: bold;
+  font-size: 14px;
+}
+
+.inmo-user-details {
+  display: flex;
+  flex-direction: column;
+}
+
+.inmo-name {
+  font-weight: 700;
+  font-size: 13px;
+  color: var(--inmo-dark);
+}
+
+.inmo-property {
+  font-size: 11px;
+  color: var(--inmo-gray);
+  text-transform: uppercase;
+}
+
+/* 4. BOTONES Y DOTS */
+.nav-btn {
+  flex-shrink: 0; 
+  background: white;
+  border: 1px solid #eaeaea;
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  cursor: pointer;
+  color: var(--inmo-gray);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: bold;
+  transition: all 0.3s;
+}
+
+.nav-btn:hover:not(:disabled) {
+  border-color: var(--inmo-magenta);
+  color: var(--inmo-magenta);
+}
+
+.nav-btn:disabled {
+  opacity: 0.3;
+  cursor: not-allowed;
+}
+
+.loading-nav { opacity: 0 !important; }
+
+.inmo-dots-container {
+  display: flex;
+  justify-content: center;
+  gap: 6px;
+  margin-top: 15px;
+}
+
+.inmo-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #ddd;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.inmo-dot.active {
+  background: var(--inmo-magenta);
+  width: 20px;
+  border-radius: 4px;
+}
+
+/* 5. SKELETONS */
+@keyframes inmo-pulse {
+  0% { opacity: 1; }
+  50% { opacity: 0.4; }
+  100% { opacity: 1; }
+}
+.skeleton-card { box-shadow: none; }
+.skeleton-header, .skeleton-line, .skeleton-avatar, .skeleton-details {
+  background: #eee;
+  animation: inmo-pulse 1.5s infinite;
+  border-radius: 4px;
+}
+.skeleton-header { width: 40%; height: 16px; margin-bottom: 20px; }
+.skeleton-line { width: 90%; height: 12px; margin-bottom: 12px; }
+.skeleton-line.short { width: 65%; }
+.skeleton-footer { display: flex; gap: 12px; margin-top: 25px; border-top: 1px solid #f0f0f0; padding-top: 15px; }
+.skeleton-avatar { width: 40px; height: 40px; border-radius: 50%; }
+.skeleton-details { width: 50%; height: 20px; margin-top: 10px; }
+
+/* 6. RESPONSIVIDAD */
+@media (max-width: 992px) {
+  .inmo-card, .skeleton-card {
+    flex: 0 0 calc(50% - 10px);
+  }
+}
+
+@media (max-width: 600px) {
+  .inmo-card, .skeleton-card {
+    flex: 0 0 100%; 
+  }
+  .nav-btn {
+    display: none;
+  }
+}/**
  * IER - Inmobiliarte Engine Reviews
- * Versión: 2.0.0 (Mobile-First & Modal Fix)
- * Optimizado para responsividad, SEO y legibilidad en todos los dispositivos.
+ * Versión: 2.1.0 (Bootstrap Fix & Width Alignment)
+ * Optimizado para responsividad, SEO y legibilidad.
  */
 
 /* 1. SETUP & RESETS CORPORATIVOS */
@@ -14,30 +259,24 @@
   --card-bg: #ffffff;
 }
 
-/* Fuerza tipografía corporativa */
 #ier-app-root, .ier-modal {
   font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
 }
 
-/* 2. SECCIÓN PRINCIPAL (Responsive de base) */
+/* 2. SECCIÓN PRINCIPAL (Ajustada a 1110px) */
 .inmo-reviews-section {
-  width: 100%; /* Base responsive */
+  width: 100%;
+  max-width: 1110px; /* Alineación con el sitio principal */
   margin: 30px auto;
-  padding: 0 15px; /* Padding de seguridad para móvil */
+  padding: 0 15px;
   box-sizing: border-box;
 }
 
-/* Breakout para pantallas grandes */
 @media (min-width: 1200px) {
   .inmo-reviews-section {
-    width: 100vw;
-    position: relative;
-    left: 50%;
-    transform: translateX(-50%);
-    margin: 60px 0;
+    margin: 60px auto;
     padding: 20px 0;
-    max-width: none;
   }
 }
 
@@ -46,22 +285,20 @@
   color: var(--inmo-dark);
   font-weight: 700;
   margin-bottom: 25px;
-  font-size: 22px; /* Más pequeño en móvil */
+  font-size: 22px;
 }
 
 @media (min-width: 768px) {
   .inmo-title { font-size: 32px; margin-bottom: 40px; }
 }
 
-/* 3. ARQUITECTURA DEL CARRUSEL (Mobile-First) */
+/* 3. ARQUITECTURA DEL CARRUSEL */
 .inmo-carousel-container {
   display: flex;
   align-items: center;
   justify-content: center;
   width: 100%;
-  max-width: 1100px;
-  margin: 0 auto;
-  position: relative; /* Para posicionar flechas sobre el carrusel en móvil */
+  position: relative;
 }
 
 .inmo-carousel-viewport {
@@ -72,7 +309,7 @@
 .inmo-carousel {
   display: flex;
   align-items: stretch;
-  gap: 15px; /* Menos espacio en móvil */
+  gap: 15px;
   transition: transform 0.5s ease;
 }
 
@@ -80,23 +317,20 @@
   .inmo-carousel { gap: 20px; }
 }
 
-/* 4. DISEÑO DE LA TARJETA (Ajustable) */
+/* 4. DISEÑO DE LA TARJETA & FIX BOOTSTRAP */
 .inmo-card {
   background: var(--card-bg);
   border: 1px solid #eaeaea;
   border-radius: 12px;
-  padding: 20px; /* Menos padding en móvil */
+  padding: 20px;
   box-shadow: 0 4px 15px rgba(0, 0, 0, 0.03);
   display: flex;
   flex-direction: column;
   box-sizing: border-box;
-  
-  /* MÓVIL: Una tarjeta por vista */
   flex: 0 0 100%; 
   min-height: 380px;
 }
 
-/* Escritorio: Tres tarjetas por vista */
 @media (min-width: 992px) {
   .inmo-card {
     flex: 0 0 calc(33.333% - 13.333px);
@@ -105,11 +339,16 @@
   }
 }
 
-.card-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 10px;
+/* FIX: Neutraliza estilos de Bootstrap en el card-header */
+.inmo-card .card-header {
+  background: none !important;
+  background-color: transparent !important;
+  border-bottom: none !important;
+  padding: 0 !important;
+  margin-bottom: 10px !important;
+  display: flex !important;
+  justify-content: space-between !important;
+  align-items: center !important;
 }
 
 .inmo-stars { color: var(--inmo-gold); font-size: 14px; letter-spacing: 1px; }
@@ -129,18 +368,16 @@
   align-self: flex-start;
 }
 
-/* 5. TEXTO Y ALINEACIÓN (Fix para Móvil) */
+/* 5. TEXTO Y ALINEACIÓN */
 .comment-wrapper {
-  /* MÓVIL: Altura automática para que quepa todo el texto truncado */
   height: auto; 
   margin-bottom: 15px;
   display: flex;
   flex-direction: column;
 }
 
-/* ESCRITORIO: Altura fija para alinear respuestas */
 @media (min-width: 992px) {
-  .comment-wrapper { height: 125px; }
+  .comment-wrapper { height: 110px; }
 }
 
 .review-question {
@@ -153,26 +390,19 @@
 }
 
 .inmo-comment {
-  font-size: 13px; /* Un punto más pequeño en móvil */
+  font-size: 13px;
   color: var(--inmo-dark);
   line-height: 1.5;
   font-style: italic;
   margin: 0;
-  
   display: -webkit-box;
-  -webkit-line-clamp: 4; /* Truncado visual */
+  -webkit-line-clamp: 4;
   -webkit-box-orient: vertical;
   overflow: hidden;
   cursor: pointer;
 }
 
 @media (min-width: 768px) { .inmo-comment { font-size: 14px; } }
-
-/* Fix para hover en escritorio vs touch en móvil */
-.review-trigger { transition: opacity 0.2s; }
-@media (hover: hover) {
-  .review-trigger:hover { opacity: 0.7; }
-}
 
 /* 6. RESPUESTA Y FOOTER */
 .inmo-reply {
@@ -183,18 +413,14 @@
   margin-bottom: 15px;
 }
 
-@media (min-width: 768px) { .inmo-reply { padding: 12px; margin-bottom: 20px; } }
-
 .inmo-footer {
   display: flex;
   align-items: center;
   gap: 10px;
   border-top: 1px solid #f0f0f0;
   padding-top: 15px;
-  margin-top: auto; /* Empuja al fondo */
+  margin-top: auto;
 }
-
-@media (min-width: 768px) { .inmo-footer { gap: 12px; } }
 
 .inmo-avatar {
   width: 36px; height: 36px;
@@ -202,8 +428,6 @@
   display: flex; align-items: center; justify-content: center;
   font-weight: bold; font-size: 12px;
 }
-
-@media (min-width: 768px) { .inmo-avatar { width: 40px; height: 40px; font-size: 14px; } }
 
 /* Colores de Avatares */
 .avatar-magenta { background-color: #d81b60; }
@@ -215,90 +439,55 @@
 .inmo-name { font-weight: 700; font-size: 12px; color: var(--inmo-dark); display: block; }
 .inmo-property { font-size: 10px; color: var(--inmo-gray); text-transform: uppercase; }
 
-@media (min-width: 768px) { .inmo-name { font-size: 13px; } .inmo-property { font-size: 11px; } }
-
-/* 7. NAVEGACIÓN CORPORATIVA */
+/* 7. NAVEGACIÓN */
 .nav-btn {
-  /* MÓVIL: Flotan sobre el carrusel para no ocupar espacio a los lados */
   position: absolute;
   top: 50%;
   transform: translateY(-50%);
   z-index: 10;
-  
   width: 35px; height: 35px; border-radius: 50%;
   border: 1px solid rgba(234,234,234,0.8); 
   background: rgba(255,255,255,0.9);
   cursor: pointer; color: var(--inmo-gray);
   display: flex; align-items: center; justify-content: center;
-  transition: 0.3s;
   box-shadow: 0 2px 5px rgba(0,0,0,0.1);
 }
 
 .inmo-prev { left: 5px; }
 .inmo-next { right: 5px; }
 
-/* ESCRITORIO: Vuelven a su posición lateral estándar */
 @media (min-width: 992px) {
   .nav-btn { position: static; transform: none; width: 40px; height: 40px; background: #fff; box-shadow: none; border: 1px solid #eaeaea; }
-  .inmo-carousel-container { gap: 15px; }
 }
 
-.nav-btn:hover:not(:disabled) { border-color: var(--inmo-magenta); color: var(--inmo-magenta); }
-.nav-btn:disabled { opacity: 0.15; cursor: not-allowed; } /* Más sutil en móvil */
+.nav-btn:disabled { opacity: 0.15; cursor: not-allowed; }
 
-/* SKELETON LOADING STATE (Restaurado para Responsividad) */
-@keyframes inmo-pulse { 0% { opacity: 1; } 50% { opacity: 0.4; } 100% { opacity: 1; } }
-.skeleton-card { box-shadow: none; pointer-events: none; }
-.skeleton-header, .skeleton-line, .skeleton-avatar, .skeleton-details { background: #eee; animation: inmo-pulse 1.5s infinite; border-radius: 4px; }
-.skeleton-header { width: 40%; height: 16px; margin-bottom: 20px; }
-.skeleton-line { width: 90%; height: 12px; margin-bottom: 12px; }
-.skeleton-line.short { width: 65%; }
-.skeleton-footer { display: flex; gap: 12px; margin-top: 25px; border-top: 1px solid #f0f0f0; padding-top: 15px; }
-.skeleton-avatar { width: 40px; height: 40px; border-radius: 50%; }
-.skeleton-details { width: 50%; height: 20px; margin-top: 10px; }
-
-.loading-state .nav-btn { display: none; } /* Ocultar flechas en carga */
-
-/* DOTS NAVEGACIÓN (Fix móvil) */
+/* DOTS */
 .inmo-dots-container { display: flex; justify-content: center; gap: 8px; margin-top: 20px; }
-@media (min-width: 768px) { .inmo-dots-container { margin-top: 30px; } }
-
-.inmo-dot { width: 8px; height: 8px; border-radius: 50%; background: #ddd; cursor: pointer; transition: 0.3s; }
+.inmo-dot { width: 8px; height: 8px; border-radius: 50%; background: #ddd; cursor: pointer; }
 .inmo-dot.active { background: var(--inmo-magenta); width: 20px; border-radius: 4px; }
 
-/* 8. MODAL SYSTEM & FIX DE FORMATO (`image_9.png`) */
+/* 8. MODAL SYSTEM */
 .ier-modal {
   display: none; position: fixed; z-index: 99999;
   left: 0; top: 0; width: 100vw; height: 100vh;
-  background: rgba(0,0,0,0.7); /* Fondo más oscuro para enfoque */
+  background: rgba(0,0,0,0.7);
   -webkit-backdrop-filter: blur(4px);
   backdrop-filter: blur(4px);
   align-items: center; justify-content: center;
-  box-sizing: border-box;
 }
 
 .ier-modal-content {
   background: white; 
-  padding: 30px 20px; /* Padding ajustado para móvil */
+  padding: 30px 20px;
   border-radius: 12px;
-  max-width: 500px; width: 92%; /* Ocupa más ancho en móvil */
+  max-width: 500px; width: 92%;
   position: relative;
   max-height: 85vh; overflow-y: auto;
-  animation: ierFadeIn 0.3s ease;
   box-shadow: 0 10px 30px rgba(0,0,0,0.3);
 }
 
-@media (min-width: 768px) {
-  .ier-modal-content { padding: 40px 30px; width: 90%; }
-}
-
-@keyframes ierFadeIn { from { opacity: 0; transform: translateY(-10px); } to { opacity: 1; transform: translateY(0); } }
-
 .close-modal { 
   position: absolute; right: 12px; top: 8px; 
-  cursor: pointer; font-size: 32px; /* Más grande para touch */
-  color: #bbb; line-height: 1; z-index: 10;
+  cursor: pointer; font-size: 32px; color: #bbb;
 }
-
-.close-modal:hover { color: var(--inmo-magenta); }
-
