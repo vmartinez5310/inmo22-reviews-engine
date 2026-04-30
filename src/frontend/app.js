@@ -185,7 +185,7 @@ function openModal(data) {
         
         ${data.respuesta ? `
             <div class="inmo-reply" style="margin-bottom: 25px; padding:15px;">
-                <strong style="font-size:12px; color:var(--inmo-magenta); text-transform:uppercase; display:block; margin-bottom:8px;">Nuestra Respuesta:</strong>
+                <strong style="font-size:12px; color:var(--inmo-magenta); text-transform:uppercase; display:block; margin-bottom:8px;">Respuesta de Inmobiliarte 22:</strong>
                 <p style="font-size:13px; margin:0; color:#555; line-height:1.5;">${data.respuesta}</p>
             </div>
         ` : ""}
