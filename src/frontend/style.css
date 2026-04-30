@@ -1,89 +1,121 @@
+/**
+ * IER - Inmobiliarte Engine Reviews
+ * Versión: 2.0.0 (Mobile-First & Modal Fix)
+ * Optimizado para responsividad, SEO y legibilidad en todos los dispositivos.
+ */
+
+/* 1. SETUP & RESETS CORPORATIVOS */
 :root {
   --inmo-magenta: #a31d5d;
-  --inmo-celeste: #3897f0;
   --inmo-dark: #333333;
   --inmo-gray: #757575;
   --inmo-light-gray: #f9f9f9;
-  --card-bg: #ffffff;
   --inmo-gold: #cfa15e;
+  --card-bg: #ffffff;
 }
-/* Paleta de Colores Dinámica para Avatares */
-.avatar-magenta { background-color: #d81b60; }
-.avatar-blue    { background-color: #1e88e5; }
-.avatar-green   { background-color: #43a047; }
-.avatar-orange  { background-color: #fb8c00; }
-.avatar-purple  { background-color: #8e24aa; }
 
-/* 1. SECCIÓN PRINCIPAL */
+/* Fuerza tipografía corporativa */
+#ier-app-root, .ier-modal {
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* 2. SECCIÓN PRINCIPAL (Responsive de base) */
 .inmo-reviews-section {
-  width: 100%;
-  max-width: 1100px;
-  margin: 40px auto;
-  padding: 0 20px;
+  width: 100%; /* Base responsive */
+  margin: 30px auto;
+  padding: 0 15px; /* Padding de seguridad para móvil */
   box-sizing: border-box;
-  font-family: "Helvetica Neue", Arial, sans-serif;
+}
+
+/* Breakout para pantallas grandes */
+@media (min-width: 1200px) {
+  .inmo-reviews-section {
+    width: 100vw;
+    position: relative;
+    left: 50%;
+    transform: translateX(-50%);
+    margin: 60px 0;
+    padding: 20px 0;
+    max-width: none;
+  }
 }
 
 .inmo-title {
   text-align: center;
   color: var(--inmo-dark);
   font-weight: 700;
-  margin-bottom: 30px;
-  font-size: 28px;
+  margin-bottom: 25px;
+  font-size: 22px; /* Más pequeño en móvil */
 }
 
-/* 2. ARQUITECTURA FLEXBOX PARA BOTONES Y CARRUSEL */
+@media (min-width: 768px) {
+  .inmo-title { font-size: 32px; margin-bottom: 40px; }
+}
+
+/* 3. ARQUITECTURA DEL CARRUSEL (Mobile-First) */
 .inmo-carousel-container {
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 15px;
   width: 100%;
+  max-width: 1100px;
+  margin: 0 auto;
+  position: relative; /* Para posicionar flechas sobre el carrusel en móvil */
 }
 
 .inmo-carousel-viewport {
   overflow: hidden;
-  flex-grow: 1;
+  width: 100%;
 }
 
 .inmo-carousel {
   display: flex;
-  gap: 20px;
-  transition: transform 0.5s cubic-bezier(0.25, 1, 0.5, 1);
-  padding: 10px 0;
+  align-items: stretch;
+  gap: 15px; /* Menos espacio en móvil */
+  transition: transform 0.5s ease;
 }
 
-/* 3. DISEÑO DE LA TARJETA */
+@media (min-width: 768px) {
+  .inmo-carousel { gap: 20px; }
+}
+
+/* 4. DISEÑO DE LA TARJETA (Ajustable) */
 .inmo-card {
   background: var(--card-bg);
   border: 1px solid #eaeaea;
   border-radius: 12px;
-  padding: 24px;
+  padding: 20px; /* Menos padding en móvil */
   box-shadow: 0 4px 15px rgba(0, 0, 0, 0.03);
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
-  flex: 0 0 calc(33.333% - 13.333px); 
   box-sizing: border-box;
+  
+  /* MÓVIL: Una tarjeta por vista */
+  flex: 0 0 100%; 
+  min-height: 380px;
+}
+
+/* Escritorio: Tres tarjetas por vista */
+@media (min-width: 992px) {
+  .inmo-card {
+    flex: 0 0 calc(33.333% - 13.333px);
+    padding: 24px;
+    min-height: 420px;
+  }
 }
 
 .card-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 8px;
+  margin-bottom: 10px;
 }
 
-.inmo-stars {
-  color: var(--inmo-gold);
-  font-size: 16px;
-  letter-spacing: 1px;
-}
+.inmo-stars { color: var(--inmo-gold); font-size: 14px; letter-spacing: 1px; }
+.time-stamp { font-size: 10px; color: #bbb; }
 
-.time-stamp {
-  font-size: 10px;
-  color: #bbb;
-}
+@media (min-width: 768px) { .inmo-stars { font-size: 16px; } }
 
 .service-tag {
   background: #f4eff2;
@@ -92,129 +124,132 @@
   font-size: 9px;
   color: var(--inmo-magenta);
   font-weight: 800;
-  display: inline-block;
-  margin-bottom: 12px;
   text-transform: uppercase;
+  margin-bottom: 12px;
+  align-self: flex-start;
 }
 
-.inmo-comment {
-  font-size: 14px;
-  color: var(--inmo-dark);
-  line-height: 1.5;
-  font-style: italic;
-  margin: 0 0 15px 0;
-}
-
-/* Caja de respuesta de Inmobiliaria */
-.inmo-reply {
-  background: var(--inmo-light-gray);
-  padding: 12px;
-  border-radius: 8px;
-  margin-top: auto;
-  border-left: 2px solid var(--inmo-magenta);
-}
-
-.inmo-footer {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  border-top: 1px solid #f0f0f0;
-  padding-top: 15px;
-  margin-top: 15px;
-}
-
-.inmo-avatar {
-  width: 40px;
-  height: 40px;
-  color: white;
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-weight: bold;
-  font-size: 14px;
-}
-
-.inmo-user-details {
+/* 5. TEXTO Y ALINEACIÓN (Fix para Móvil) */
+.comment-wrapper {
+  /* MÓVIL: Altura automática para que quepa todo el texto truncado */
+  height: auto; 
+  margin-bottom: 15px;
   display: flex;
   flex-direction: column;
 }
 
-.inmo-name {
+/* ESCRITORIO: Altura fija para alinear respuestas */
+@media (min-width: 992px) {
+  .comment-wrapper { height: 125px; }
+}
+
+.review-question {
+  font-size: 10px;
+  color: var(--inmo-gray);
   font-weight: 700;
-  font-size: 13px;
-  color: var(--inmo-dark);
-}
-
-.inmo-property {
-  font-size: 11px;
-  color: var(--inmo-gray);
   text-transform: uppercase;
+  margin-bottom: 6px;
+  line-height: 1.3;
 }
 
-/* 4. BOTONES Y DOTS */
-.nav-btn {
-  flex-shrink: 0; 
-  background: white;
-  border: 1px solid #eaeaea;
-  border-radius: 50%;
-  width: 40px;
-  height: 40px;
+.inmo-comment {
+  font-size: 13px; /* Un punto más pequeño en móvil */
+  color: var(--inmo-dark);
+  line-height: 1.5;
+  font-style: italic;
+  margin: 0;
+  
+  display: -webkit-box;
+  -webkit-line-clamp: 4; /* Truncado visual */
+  -webkit-box-orient: vertical;
+  overflow: hidden;
   cursor: pointer;
-  color: var(--inmo-gray);
+}
+
+@media (min-width: 768px) { .inmo-comment { font-size: 14px; } }
+
+/* Fix para hover en escritorio vs touch en móvil */
+.review-trigger { transition: opacity 0.2s; }
+@media (hover: hover) {
+  .review-trigger:hover { opacity: 0.7; }
+}
+
+/* 6. RESPUESTA Y FOOTER */
+.inmo-reply {
+  background: var(--inmo-light-gray);
+  padding: 10px;
+  border-radius: 8px;
+  border-left: 2px solid var(--inmo-magenta);
+  margin-bottom: 15px;
+}
+
+@media (min-width: 768px) { .inmo-reply { padding: 12px; margin-bottom: 20px; } }
+
+.inmo-footer {
   display: flex;
   align-items: center;
-  justify-content: center;
-  font-weight: bold;
-  transition: all 0.3s;
+  gap: 10px;
+  border-top: 1px solid #f0f0f0;
+  padding-top: 15px;
+  margin-top: auto; /* Empuja al fondo */
 }
 
-.nav-btn:hover:not(:disabled) {
-  border-color: var(--inmo-magenta);
-  color: var(--inmo-magenta);
+@media (min-width: 768px) { .inmo-footer { gap: 12px; } }
+
+.inmo-avatar {
+  width: 36px; height: 36px;
+  color: white; border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-weight: bold; font-size: 12px;
 }
 
-.nav-btn:disabled {
-  opacity: 0.3;
-  cursor: not-allowed;
-}
+@media (min-width: 768px) { .inmo-avatar { width: 40px; height: 40px; font-size: 14px; } }
 
-.loading-nav { opacity: 0 !important; }
+/* Colores de Avatares */
+.avatar-magenta { background-color: #d81b60; }
+.avatar-blue    { background-color: #1e88e5; }
+.avatar-green   { background-color: #43a047; }
+.avatar-orange  { background-color: #fb8c00; }
+.avatar-purple  { background-color: #8e24aa; }
 
-.inmo-dots-container {
-  display: flex;
-  justify-content: center;
-  gap: 6px;
-  margin-top: 15px;
-}
+.inmo-name { font-weight: 700; font-size: 12px; color: var(--inmo-dark); display: block; }
+.inmo-property { font-size: 10px; color: var(--inmo-gray); text-transform: uppercase; }
 
-.inmo-dot {
-  width: 8px;
-  height: 8px;
-  border-radius: 50%;
-  background: #ddd;
-  cursor: pointer;
+@media (min-width: 768px) { .inmo-name { font-size: 13px; } .inmo-property { font-size: 11px; } }
+
+/* 7. NAVEGACIÓN CORPORATIVA */
+.nav-btn {
+  /* MÓVIL: Flotan sobre el carrusel para no ocupar espacio a los lados */
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 10;
+  
+  width: 35px; height: 35px; border-radius: 50%;
+  border: 1px solid rgba(234,234,234,0.8); 
+  background: rgba(255,255,255,0.9);
+  cursor: pointer; color: var(--inmo-gray);
+  display: flex; align-items: center; justify-content: center;
   transition: 0.3s;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
 }
 
-.inmo-dot.active {
-  background: var(--inmo-magenta);
-  width: 20px;
-  border-radius: 4px;
+.inmo-prev { left: 5px; }
+.inmo-next { right: 5px; }
+
+/* ESCRITORIO: Vuelven a su posición lateral estándar */
+@media (min-width: 992px) {
+  .nav-btn { position: static; transform: none; width: 40px; height: 40px; background: #fff; box-shadow: none; border: 1px solid #eaeaea; }
+  .inmo-carousel-container { gap: 15px; }
 }
 
-/* 5. SKELETONS */
-@keyframes inmo-pulse {
-  0% { opacity: 1; }
-  50% { opacity: 0.4; }
-  100% { opacity: 1; }
-}
-.skeleton-card { box-shadow: none; }
-.skeleton-header, .skeleton-line, .skeleton-avatar, .skeleton-details {
-  background: #eee;
-  animation: inmo-pulse 1.5s infinite;
-  border-radius: 4px;
-}
+.nav-btn:hover:not(:disabled) { border-color: var(--inmo-magenta); color: var(--inmo-magenta); }
+.nav-btn:disabled { opacity: 0.15; cursor: not-allowed; } /* Más sutil en móvil */
+
+/* SKELETON LOADING STATE (Restaurado para Responsividad) */
+@keyframes inmo-pulse { 0% { opacity: 1; } 50% { opacity: 0.4; } 100% { opacity: 1; } }
+.skeleton-card { box-shadow: none; pointer-events: none; }
+.skeleton-header, .skeleton-line, .skeleton-avatar, .skeleton-details { background: #eee; animation: inmo-pulse 1.5s infinite; border-radius: 4px; }
 .skeleton-header { width: 40%; height: 16px; margin-bottom: 20px; }
 .skeleton-line { width: 90%; height: 12px; margin-bottom: 12px; }
 .skeleton-line.short { width: 65%; }
@@ -222,18 +257,48 @@
 .skeleton-avatar { width: 40px; height: 40px; border-radius: 50%; }
 .skeleton-details { width: 50%; height: 20px; margin-top: 10px; }
 
-/* 6. RESPONSIVIDAD */
-@media (max-width: 992px) {
-  .inmo-card, .skeleton-card {
-    flex: 0 0 calc(50% - 10px);
-  }
+.loading-state .nav-btn { display: none; } /* Ocultar flechas en carga */
+
+/* DOTS NAVEGACIÓN (Fix móvil) */
+.inmo-dots-container { display: flex; justify-content: center; gap: 8px; margin-top: 20px; }
+@media (min-width: 768px) { .inmo-dots-container { margin-top: 30px; } }
+
+.inmo-dot { width: 8px; height: 8px; border-radius: 50%; background: #ddd; cursor: pointer; transition: 0.3s; }
+.inmo-dot.active { background: var(--inmo-magenta); width: 20px; border-radius: 4px; }
+
+/* 8. MODAL SYSTEM & FIX DE FORMATO (`image_9.png`) */
+.ier-modal {
+  display: none; position: fixed; z-index: 99999;
+  left: 0; top: 0; width: 100vw; height: 100vh;
+  background: rgba(0,0,0,0.7); /* Fondo más oscuro para enfoque */
+  -webkit-backdrop-filter: blur(4px);
+  backdrop-filter: blur(4px);
+  align-items: center; justify-content: center;
+  box-sizing: border-box;
 }
 
-@media (max-width: 600px) {
-  .inmo-card, .skeleton-card {
-    flex: 0 0 100%; 
-  }
-  .nav-btn {
-    display: none;
-  }
+.ier-modal-content {
+  background: white; 
+  padding: 30px 20px; /* Padding ajustado para móvil */
+  border-radius: 12px;
+  max-width: 500px; width: 92%; /* Ocupa más ancho en móvil */
+  position: relative;
+  max-height: 85vh; overflow-y: auto;
+  animation: ierFadeIn 0.3s ease;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.3);
 }
+
+@media (min-width: 768px) {
+  .ier-modal-content { padding: 40px 30px; width: 90%; }
+}
+
+@keyframes ierFadeIn { from { opacity: 0; transform: translateY(-10px); } to { opacity: 1; transform: translateY(0); } }
+
+.close-modal { 
+  position: absolute; right: 12px; top: 8px; 
+  cursor: pointer; font-size: 32px; /* Más grande para touch */
+  color: #bbb; line-height: 1; z-index: 10;
+}
+
+.close-modal:hover { color: var(--inmo-magenta); }
+
