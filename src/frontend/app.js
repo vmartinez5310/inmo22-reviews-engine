@@ -118,10 +118,7 @@ function renderCards(carousel, config) {
         const randomClass = avatarClasses[index % avatarClasses.length];
         
         // --- CORRECCIÓN DE FECHA DINÁMICA ---
-        const fechaReview = new Date(item.timestamp);
-        const hoy = new Date();
-        const diferenciaDias = Math.floor((hoy - fechaReview) / (1000 * 60 * 60 * 24));
-        const tiempoTxt = diferenciaDias <= 0 ? "Hoy" : (diferenciaDias === 1 ? "Ayer" : `Hace ${diferenciaDias} días`);
+       const tiempoTxt = obtenerTiempoRelativo(item.timestamp);
 
         const preguntaFinal = item.pregunta || config.question || "¿Qué destacarías de nuestro servicio?";
 
@@ -267,4 +264,34 @@ function update(carousel, prevBtn, nextBtn) {
     
     nextBtn.disabled = currentIndex >= totalPages - 1;
     nextBtn.style.opacity = currentIndex >= totalPages - 1 ? op : "1";
+}
+
+// --- NUEVO CALCULADOR DE TIEMPO RELATIVO ---
+function obtenerTiempoRelativo(timestamp) {
+    const fechaReview = new Date(timestamp);
+    const hoy = new Date();
+    
+    // Calculamos la diferencia base en días
+    const diferenciaDias = Math.floor((hoy - fechaReview) / (1000 * 60 * 60 * 24));
+
+    if (diferenciaDias <= 0) return "Hoy";
+    if (diferenciaDias === 1) return "Ayer";
+
+    // Lógica de escalado (Años, Meses, Semanas, Días)
+    if (diferenciaDias >= 365) {
+        const anios = Math.floor(diferenciaDias / 365);
+        return anios === 1 ? "Hace 1 año" : `Hace ${anios} años`;
+    }
+    
+    if (diferenciaDias >= 30) {
+        const meses = Math.floor(diferenciaDias / 30);
+        return meses === 1 ? "Hace 1 mes" : `Hace ${meses} meses`;
+    }
+    
+    if (diferenciaDias >= 7) {
+        const semanas = Math.floor(diferenciaDias / 7);
+        return semanas === 1 ? "Hace 1 semana" : `Hace ${semanas} semanas`;
+    }
+
+    return `Hace ${diferenciaDias} días`;
 }
